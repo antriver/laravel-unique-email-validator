@@ -28,4 +28,21 @@ those versions of newer should work.
 
 ## Usage
 
-    // TODO
+    $this->validate(
+        $request,
+        [
+            // Check for other use of the same email address in the users.email column.
+            'email' => [new \Antriver\Antriver\LaravelUniqueEmailValidator\UniqueEmailRule('users', 'email')],
+        ]
+    );
+
+Like the original unique rule you can specify certain rows should be excluded. This is useful when updating a user and
+that should not reject the user's existing registered email address:
+
+        $this->validate(
+            $request,
+            [
+                'email' => [new \Antriver\Antriver\LaravelUniqueEmailValidator\UniqueEmailRule('users', 'email', ['id' => 123])],
+                // Where 123 is the 'id' of the existing user.
+            ]
+        );
