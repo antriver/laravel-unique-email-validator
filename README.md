@@ -46,4 +46,4 @@ that should not reject the user's existing registered email address:
             // Where 123 is the 'id' of the existing user.
         ]
     );
-```php
+```
