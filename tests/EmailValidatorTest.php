@@ -125,6 +125,27 @@ class EmailValidatorTest extends TestCase
         $this->assertNotContains($this->otherRegisteredEmails, $resultEmails);
     }
 
+    public function testSelectRowsWithAliasedEmailsWithExclusion()
+    {
+        $results = $this->emailValidator->selectMatchingEmails(
+            'anthonykuske@gmail.com',
+            'users',
+            'email',
+            [
+                'id' => 6, // Exclude the 'anthonykuske+hello@gmail.com' email.
+            ]
+        );
+
+        $this->assertCount(count($this->userAEmails) - 1, $results);
+        $resultEmails = array_map(
+            function ($row) {
+                return $row->email;
+            },
+            $results
+        );
+        $this->assertNotContains('anthonykuske+hello@gmail.com', $resultEmails);
+    }
+
     public function dataForTestCreateRegexForEmail()
     {
         return [

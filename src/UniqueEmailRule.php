@@ -12,14 +12,20 @@ class UniqueEmailRule implements Rule
     private $column;
 
     /**
+     * @var array
+     */
+    private $excludeRows;
+
+    /**
      * @var string
      */
     private $table;
 
-    public function __construct(string $table, string $column)
+    public function __construct(string $table, string $column, array $excludeRows = [])
     {
         $this->table = $table;
         $this->column = $column;
+        $this->excludeRows = $excludeRows;
     }
 
     /**
@@ -35,7 +41,7 @@ class UniqueEmailRule implements Rule
         /** @var EmailValidator $validator */
         $validator = app(EmailValidator::class);
 
-        return empty($validator->selectMatchingEmails($value, $this->table, $this->column));
+        return empty($validator->selectMatchingEmails($value, $this->table, $this->column, $this->excludeRows));
     }
 
     /**

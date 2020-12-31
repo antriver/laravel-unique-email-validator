@@ -24,16 +24,18 @@ class EmailValidator
         $this->dbConnection = $dbConnection;
     }
 
-    public function selectMatchingEmails(string $email, string $table, string $column): array
+    public function selectMatchingEmails(string $email, string $table, string $column, array $excludeRows = []): array
     {
         $regex = $this->createRegexForEmail($email);
+        $params = [$regex];
 
-        return $this->dbConnection->select(
-            "SELECT `{$column}` FROM `{$table}` WHERE LOWER(`{$column}`) REGEXP ?",
-            [
-                $regex
-            ]
-        );
+        $query = "SELECT `{$column}` FROM `{$table}` WHERE LOWER(`{$column}`) REGEXP ?";
+        foreach ($excludeRows as $key => $value) {
+            $query .= " AND `{$key}` != ?";
+            $params[] = $value;
+        }
+
+        return $this->dbConnection->select($query, $params);
     }
 
     public function createRegexForEmail(string $email): string
