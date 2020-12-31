@@ -20,7 +20,7 @@ will all work. For example if your email address is somename@gmail.com you can a
 ## Requirements
 
 Your MySQL server must support the non-greedy regex operator. This has been tested with MySQL 8 and MariaDB 10.2 so
-those versions of newer should work.
+those versions or newer should work.
 
 ## Installation
 
